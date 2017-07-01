@@ -1,0 +1,624 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="flex-box弹性盒子布局简介
+有关于多栏布局和flexbox的基础知识除了上面的英文教程之外还可以参阅下面的中文教程：
+
+CSS3 Multi-columns 之跨列
+CSS3 Multi-columns 之column-gap column-rule
+CSS3 Multi-columns 之列数和列宽
+CSS3 Multi-columns 之跨列
+深入了解 Flexbox 伸缩盒模型
+CSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flex_box布局">
+<meta property="og:url" content="http://yoursite.com/2016/09/27/flex-box布局/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="flex-box弹性盒子布局简介
+有关于多栏布局和flexbox的基础知识除了上面的英文教程之外还可以参阅下面的中文教程：
+
+CSS3 Multi-columns 之跨列
+CSS3 Multi-columns 之column-gap column-rule
+CSS3 Multi-columns 之列数和列宽
+CSS3 Multi-columns 之跨列
+深入了解 Flexbox 伸缩盒模型
+CSS">
+<meta property="og:image" content="http://cdn.w3cplus.com/cdn/farfuture/MRJHWfia5YnHEiKlVNVBcj9Yc0iqc42YhMtpVaJBqKE/mtime:1421035112/sites/default/files/styles/print_image/public/blogs/2013/flexbox-basics-3.jpg">
+<meta property="og:updated_time" content="2016-09-27T02:46:08.102Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flex_box布局">
+<meta name="twitter:description" content="flex-box弹性盒子布局简介
+有关于多栏布局和flexbox的基础知识除了上面的英文教程之外还可以参阅下面的中文教程：
+
+CSS3 Multi-columns 之跨列
+CSS3 Multi-columns 之column-gap column-rule
+CSS3 Multi-columns 之列数和列宽
+CSS3 Multi-columns 之跨列
+深入了解 Flexbox 伸缩盒模型
+CSS">
+<meta name="twitter:image" content="http://cdn.w3cplus.com/cdn/farfuture/MRJHWfia5YnHEiKlVNVBcj9Yc0iqc42YhMtpVaJBqKE/mtime:1421035112/sites/default/files/styles/print_image/public/blogs/2013/flexbox-basics-3.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/27/flex-box布局/"/>
+
+  <title> flex_box布局 | blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                flex_box布局
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-09-27T01:07:00+08:00" content="2016-09-27">
+              2016-09-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="flex-box弹性盒子布局"><a href="#flex-box弹性盒子布局" class="headerlink" title="flex-box弹性盒子布局"></a>flex-box弹性盒子布局</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><blockquote>
+<p>有关于多栏布局和flexbox的基础知识除了上面的英文教程之外还可以参阅下面的中文教程：</p>
+<ul>
+<li><a href="http://www.w3cplus.com/content/css3-multi-columns-span" target="_blank" rel="external">CSS3 Multi-columns 之跨列</a></li>
+<li><a href="http://www.w3cplus.com/css3-multi-columns-column-gap-and-column-rule" target="_blank" rel="external">CSS3 Multi-columns 之column-gap column-rule</a></li>
+<li><a href="http://www.w3cplus.com/content/css3-multi-columns-count-and-width" target="_blank" rel="external">CSS3 Multi-columns 之列数和列宽</a></li>
+<li><a href="http://www.w3cplus.com/content/css3-multi-columns-span" target="_blank" rel="external">CSS3 Multi-columns 之跨列</a></li>
+<li><a href="http://www.w3cplus.com/blog/666.html" target="_blank" rel="external">深入了解 Flexbox 伸缩盒模型</a></li>
+<li><a href="http://www.w3.org/html/ig/zh/css-flex-1/" target="_blank" rel="external">CSS 伸缩盒布局模组</a></li>
+</ul>
+</blockquote>
+<h3 id="Flexbox通常能让我们更好的操作他的子元素布局，例如："><a href="#Flexbox通常能让我们更好的操作他的子元素布局，例如：" class="headerlink" title="Flexbox通常能让我们更好的操作他的子元素布局，例如："></a>Flexbox通常能让我们更好的操作他的子元素布局，例如：</h3><ul>
+<li>如果元素容器没有足够的空间，我们无需计算每个元素的宽度，就可以设置他们在同一行；</li>
+<li>可以快速让他们布局在一列；</li>
+<li>可以方便让他们对齐容器的左、右、中间等；</li>
+<li>无需修改结构就可以改变他们的显示顺序；</li>
+<li>如果元素容器设置百分比和视窗大小改变，不用提心未指定元素的确切宽度而破坏布局，因为容器中的每个子元素都可以自动分配容器的宽度或高度的比例。</li>
+</ul>
+<p>注: 这篇文章使用的是Flexbox最后语法，目前支持浏览器：Opera Mobile12.1+、Opera12.5+、Firefox18+（partial）和chrome。Chrome需要添加浏览器前缀“-webkit-”,Opera支持标准语法，不用添加任何前缀。Firefox有部分支持，也需要添加前缀“-moz-”，同时需要设置一个标志（到firefox浏览器地址栏中输入：about:config，搜索“flexbox”，找到之后双击“layout.css.flexbox.enabled”，设置他的“value”值为“true”）。注意，其他浏览器除了opera自2009年支持flexbox以来，都使用旧的语法规则，真的不应该使用这些过时的语法。一定要记住阅读和使用2012年以前有关于flexbox的文章和代码时，flexbox都使用的老语法。Chris Coyie有一篇文章《“Old” Flexbox and “New” Flexbox》，这篇文章能更好的告诉你如何阅读一个过时的文章。</p>
+<h3 id="flexbox的术语"><a href="#flexbox的术语" class="headerlink" title="flexbox的术语"></a>flexbox的术语</h3><ul>
+<li>伸缩容器：一个设有“display:flex”或“display:inline-flex”的元素</li>
+<li>伸缩项目：伸缩容器的子元素</li>
+<li>主轴、主轴方向：用户代理沿着一个伸缩容器的主轴配置伸缩项目，主轴是主轴方向的延伸。</li>
+<li>主轴起点、主轴终点：伸缩项目的配置从容器的主轴起点边开始，往主轴终点边结束。</li>
+<li>主轴长度、主轴长度属性：伸缩项目的在主轴方向的宽度或高度就是项目的主轴长度，伸缩项目的主轴长度属性是width或height属性，由哪一个对着主轴方向决定。</li>
+<li>侧轴、侧轴方向：与主轴垂直的轴称作侧轴，是侧轴方向的延伸。</li>
+<li>侧轴起点、侧轴终点：填满项目的伸缩行的配置从容器的侧轴起点边开始，往侧轴终点边结束。</li>
+<li>侧轴长度、侧轴长度属性：伸缩项目的在侧轴方向的宽度或高度就是项目的侧轴长度，伸缩项目的侧轴长度属性是「width」或「height」属性，由哪一个对着侧轴方向决定。<br> 下图是一个row伸缩容器中各种方向与大小术语的示意图：<br> <img src="http://cdn.w3cplus.com/cdn/farfuture/MRJHWfia5YnHEiKlVNVBcj9Yc0iqc42YhMtpVaJBqKE/mtime:1421035112/sites/default/files/styles/print_image/public/blogs/2013/flexbox-basics-3.jpg" alt="图片"><h3 id="开始使用Flexbox"><a href="#开始使用Flexbox" class="headerlink" title="开始使用Flexbox"></a>开始使用Flexbox</h3></li>
+</ul>
+<ol>
+<li><p>大多数的Flexbox属性都应用于父容器的元素上。因为Flexbox，你可以指定你想要制定的一个容器，使用一个特殊的值显示属性，就像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">footer&#123;</div><div class="line">  display:flex;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>接下来你可以使用“flex-row”属性来指定子元素布局是在一行还是一列显示。如果你愿意，你可以定义关键词“wrap”，来指定内容容器在新的一行（当父元素容器太小，flexbox元素想在同一行显示）。在我们的例子中，我在footer中设置了“row wrap”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">footer &#123;</div><div class="line">  display: flex;</div><div class="line">  flex-flow: row wrap;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>有关于flex-flow<br> flex-flow是用来伸缩行换行，flex-flow属性是同时设定“flex-direction(伸缩流的方向)”和“flex-wrap（伸缩行换行）”属性的缩写，两个属性决定了伸缩容器的主轴与侧轴。此属性主要适用于伸缩容器。在这篇文章的例子中，主要是“footer”元素。</li>
+<li>有关于flex-direction<br> flex-direction属性可以用来设定伸缩容器的主轴的方向，这也决定了用户代理配置伸缩项目的方向。主要适用于伸缩容器，主要包括以下几个值：<ul>
+<li>row:flex-direction的默认值，表示伸缩容器的主轴与当前书写模式的行内轴（文字布局的主要主向）。主轴起点与主轴终点方向分别等同于当前书写模式的始与结方向。</li>
+<li>row-reverse：表示的是除了主轴起点与主轴终点方向交换以外同row属性值的作用。</li>
+<li>column：表示的是伸缩容器的主轴与当前书写模式的块轴（块布局的主要方向）同向。主轴起点与主轴终点方向分别等同于当前书写模式的前与后方向。简单的可以理解为列布局。</li>
+<li>column-reverse：表示的是除了主轴起点与主轴终点方向交换以外同“column”的属性值作用。</li>
+</ul>
+</li>
+<li>关于flex-wrap<br> flex-wrap属性主要用来控制伸缩容器是单行还是多行，也决定了侧轴方向一新的一行的堆放方向。主要适用于伸缩容器，主要包括以下几个值：<ul>
+<li>nowrap:flex-wrap的默认值，表示的是伸缩容器为单行。侧轴起点方向等同于当前书写模式的起点或前/头在侧轴的那一边，而侧轴终点方向是侧轴起点的相反方向。</li>
+<li>wrap：表示的是伸缩容器为多行。侧轴起点方向等同于当前书写模式的起眯或前/头在侧轴的那一边，而侧轴终点方向是侧轴起点的相反方向。</li>
+<li>wrap-reverse：除了侧轴起点与侧轴终点方向交换以外同wrap所起作用相同。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/24/微博摘录/" rel="next" title="微博摘录 ‘从来就没有感同身受’">
+                <i class="fa fa-chevron-left"></i> 微博摘录 ‘从来就没有感同身受’
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/01/正确安装node-sass模块/" rel="prev" title="正确安装node-sass模块">
+                正确安装node-sass模块 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Edward cao" />
+          <p class="site-author-name" itemprop="name">Edward cao</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#flex-box弹性盒子布局"><span class="nav-number">1.</span> <span class="nav-text">flex-box弹性盒子布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flexbox通常能让我们更好的操作他的子元素布局，例如："><span class="nav-number">1.2.</span> <span class="nav-text">Flexbox通常能让我们更好的操作他的子元素布局，例如：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flexbox的术语"><span class="nav-number">1.3.</span> <span class="nav-text">flexbox的术语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开始使用Flexbox"><span class="nav-number">1.4.</span> <span class="nav-text">开始使用Flexbox</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edward cao</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="AngularJS的启动中有4个核心的方法angularjs整个是一个自执行函数，当js文件一加载完就会执行    
+
+bootStrap   创建injector、拉起内核和启动模块、调用 compile服务
+publishExternalAPI
+调用setupModuleLoader(window)函数建立模块机制
+注册内核provider(俩个最重要的provider:$scope和$roo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular启动机制源码解析">
+<meta property="og:url" content="http://yoursite.com/2016/09/15/angular的启动机制源码解析/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="AngularJS的启动中有4个核心的方法angularjs整个是一个自执行函数，当js文件一加载完就会执行    
+
+bootStrap   创建injector、拉起内核和启动模块、调用 compile服务
+publishExternalAPI
+调用setupModuleLoader(window)函数建立模块机制
+注册内核provider(俩个最重要的provider:$scope和$roo">
+<meta property="og:updated_time" content="2016-09-15T06:41:48.098Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular启动机制源码解析">
+<meta name="twitter:description" content="AngularJS的启动中有4个核心的方法angularjs整个是一个自执行函数，当js文件一加载完就会执行    
+
+bootStrap   创建injector、拉起内核和启动模块、调用 compile服务
+publishExternalAPI
+调用setupModuleLoader(window)函数建立模块机制
+注册内核provider(俩个最重要的provider:$scope和$roo">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/15/angular的启动机制源码解析/"/>
+
+  <title> Angular启动机制源码解析 | blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Angular启动机制源码解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-09-15T13:49:10+08:00" content="2016-09-15">
+              2016-09-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="AngularJS的启动中有4个核心的方法"><a href="#AngularJS的启动中有4个核心的方法" class="headerlink" title="AngularJS的启动中有4个核心的方法"></a>AngularJS的启动中有4个核心的方法</h1><p>angularjs整个是一个自执行函数，当js文件一加载完就会执行    </p>
+<ol>
+<li>bootStrap   创建injector、拉起内核和启动模块、调用 compile服务</li>
+<li>publishExternalAPI<ul>
+<li>调用setupModuleLoader(window)函数建立模块机制</li>
+<li>注册内核provider(俩个最重要的provider:$scope和$rootScope)</li>
+</ul>
+</li>
+<li>angularInit   防止多次初始化ng-app</li>
+<li>bindJQuery   尝试绑定JQuery(判断是否引入JQuery)<h2 id="angularJs有俩种启动方式"><a href="#angularJs有俩种启动方式" class="headerlink" title="angularJs有俩种启动方式"></a>angularJs有俩种启动方式</h2><h3 id="自动启动模式"><a href="#自动启动模式" class="headerlink" title="自动启动模式"></a>自动启动模式</h3>angularjs在自己加载完成后会自己去查找ng-app,找到了之后，从我们指定的模块开始启动<h3 id="手动启动模式"><a href="#手动启动模式" class="headerlink" title="手动启动模式"></a>手动启动模式</h3>没有指定ng-app,我们需要自己手动去启动，但要等到我们的文档加载完成以后，不然会报错。手动启动方法如下: <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">angular.element(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  angular.bootStrap(<span class="built_in">document</span>,[<span class="string">'appModule'</span>])</div><div class="line">  &#125;);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里我们用了JQuery中的ready的方式,等待document加载完成,然后手动调用angular.bootStrap方法,从document(比html大)开始启动,名字叫做’appModule’.</p>
+<h3 id="一个页面里是可以有多个ng-app的"><a href="#一个页面里是可以有多个ng-app的" class="headerlink" title="一个页面里是可以有多个ng-app的"></a>一个页面里是可以有多个ng-app的</h3><p>可以有多个<em>ng-app</em>,但是<strong>多个ng-app不能嵌套</strong>,不然路由处理起来很麻烦。<br>但是当我们一个页面中有多个ng-app的时候,angular并不会全部给我们自动启动,它只会把找到的第一个ng-app给启动,剩下的需要我们自己手动调用angular.bootStrap方法来启动.<br>    <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">angular.element(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  angular.bootStrap(element,[<span class="string">'appModule2'</span>],configFconfigFn)</div><div class="line">  &#125;);</div></pre></td></tr></table></figure></p>
+<p>这样就可以手动调动另外的ng-app了,但是我们一般不会在一个页面中调用多个ng-app。而且，如果当angular已经自动给我们启动，我们再调用bootstrap方法，angular会给我们抛出一个<em>异常</em>,但是并不会宕掉。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Uncaught Error: [ng:btstrpd] App already bootstrapped with this element &apos;&amp;lt;div id=&quot;app1&quot; ng-app=&quot;appModule1&quot; ng-controller=&quot;myCtrl1&quot; class=&quot;ng-scope ng-binding&quot;&amp;gt;&apos;</div></pre></td></tr></table></figure></p>
+<p>所以如果自动启动了，就不要手动再起启动了。   </p>
+<h2 id="启动中的四种方法"><a href="#启动中的四种方法" class="headerlink" title="启动中的四种方法"></a>启动中的四种方法</h2><h3 id="bindJQuery"><a href="#bindJQuery" class="headerlink" title="bindJQuery"></a>bindJQuery</h3><pre><code>当调用bindJQuery方法的时候,angular会先去取window.JQuery
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"> jQuery = isUndefined(jqName) ? <span class="built_in">window</span>.jQuery : !jqName ? <span class="literal">undefined</span> : <span class="built_in">window</span>[jqName];</div><div class="line"><span class="string">``</span><span class="string">`  </span></div><div class="line">判断window.JQuery是否存在,如果存在就说明我们已经导入了外部JQuery,就会走进一个分支,把JQuery赋值给jqLite.   </div><div class="line">`<span class="string">``</span>javascript</div><div class="line"><span class="keyword">if</span> (jQuery &amp;&amp; jQuery.fn.on) &#123;</div><div class="line">  jqLite = jQuery;</div><div class="line">  extend(jQuery.fn, &#123;</div><div class="line">    scope: JQLitePrototype.scope,</div><div class="line">    isolateScope: JQLitePrototype.isolateScope,</div><div class="line">    controller: JQLitePrototype.controller,</div><div class="line">    injector: JQLitePrototype.injector,</div><div class="line">    inheritedData: JQLitePrototype.inheritedData</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><p>   否则进入另一个分支<br>    <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">else</span> &#123;</div><div class="line">  jqLite = JQLite;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>   接下来angular会把他内部的全部API发布到angular这个全局对象上   </p>
+<h3 id="publishExternalAPI-angular"><a href="#publishExternalAPI-angular" class="headerlink" title="publishExternalAPI (angular)"></a>publishExternalAPI (angular)</h3><pre><code>1. 工具函数拷贝到全局对象angular上
+   调用extend方法 `extend(angular,{})`  
+2. 调用 setupModuleLoader方法创建 模块定义和加载工具(挂在全局对象window.angular上)
+    重要的步骤,给angular构建了模块加载器  `angularModule = setupModuleLoader(window);`
+    这么实现的是: 有多层闭包嵌套
+    利用一个拷贝函数    
+     <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj[name] || (obj[name] = factory());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+    将&apos;module&apos;拷贝到angular上，这样我们就可以调用angular.module方法了
+      会在闭包里建一个缓存   `var modules = {};`
+      当我们这样使用时:
+    <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">          <span class="keyword">var</span> app2 = angular.module(<span class="string">'appModule2'</span>,[]);</div><div class="line">app2.controller(<span class="string">'myCtrl2'</span>,[<span class="string">'$scope'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">$scope</span>) </span>&#123;</div><div class="line">    $scope.html = <span class="string">'吃饭睡觉打豆豆2'</span>;</div><div class="line">&#125;]);</div><div class="line">   <span class="string">``</span><span class="string">`    </span></div><div class="line">  'appModule2'是被当做一个key来使用缓存到闭包里的 modules=&#123;&#125;中。</div><div class="line">    紧接着再次返回一个闭包</div><div class="line">    `<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">module</span>(<span class="params">name, requires, configFn</span>) </span>&#123;....<span class="string">`</span></div><div class="line">      这个module就是调用时我们真实的 angular.moduule 有三个参数</div><div class="line">        @param name 模块的名称</div><div class="line">        @param requires 模块的依赖的其他模块</div><div class="line">        @param configFn 是一个配置函数      </div><div class="line">    里边会再次返回一个闭包 `ensure(modules, name, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;....<span class="string">`</span></div><div class="line">      会把我们创建的模块名字'appModule2'拷贝到 modules这个对象上,包括对应的方法</div><div class="line">          如果没有写依赖[]会抛出错误</div><div class="line">            `<span class="string">``</span>javascript</div><div class="line">            <span class="keyword">if</span> (!requires) &#123;</div><div class="line">              <span class="keyword">throw</span> $injectorMinErr(<span class="string">'nomod'</span>, <span class="string">"Module '&#123;0&#125;' is not available! You either misspelled "</span> +</div><div class="line">                 <span class="string">"the module name or forgot to load it. If registering a module ensure that you "</span> +</div><div class="line">                 <span class="string">"specify the dependencies as the second argument."</span>, name);</div><div class="line">            &#125;</div></pre></td></tr></table></figure>
+
+         内部会在模块这个实例上放上一大堆的工具函数
+         `**provider** factory service value constant fillter **controller** **directive** decorator`等
+         所以会有一切都是从模块开始，只有创建模块了，所有的一切才能调用，这样我们的模块app上机会有一系列的方法了
+3. 构建内置模块ng
+    setupModuleLoader完成之后,angular会首先把这些ng打头的模块注册进来 `angularModule(&apos;ng&apos;, [&apos;ngLocale&apos;], [&apos;$provide&apos;,....`
+      包括angular的一些内置的指令和 angular内置的 provider(包括$http $interval $parse $rootScope $filter 等等)
+4. 创建ng内置的directive和provider
+5. 俩个重要的provider: $parse和$rootScope
+</code></pre><h3 id="angularInit-做一些初始化的操作-防止多次初始化ng-app"><a href="#angularInit-做一些初始化的操作-防止多次初始化ng-app" class="headerlink" title="angularInit  做一些初始化的操作,防止多次初始化ng-app"></a>angularInit  做一些初始化的操作,防止多次初始化ng-app</h3><pre><code>1. 首先他会去找有没有ng-app指令,有的话会自动去调用bootstrap方法,自己把angularJs应用给启动起来在,如果没有就需要我们自己手动去掉用angular.bootstrap,否则就不会启动应用
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (appElement) &#123;</div><div class="line">  config.strictDi = getNgAttribute(appElement, <span class="string">"strict-di"</span>) !== <span class="literal">null</span>;</div><div class="line">  bootstrap(appElement, <span class="built_in">module</span> ? [<span class="built_in">module</span>] : [], config);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="bootstrap-方法"><a href="#bootstrap-方法" class="headerlink" title="bootstrap 方法"></a>bootstrap 方法</h3><pre><code>1. 首先会判断应用是否已经启动了,`if(element.injector())` 已经启动了那么在此启动就会抛出异常    
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">throw</span> ngMinErr(</div><div class="line">    <span class="string">'btstrpd'</span>,</div><div class="line">    <span class="string">"App already bootstrapped with this element '&#123;0&#125;'"</span>,</div><div class="line">    tag.replace(<span class="regexp">/&lt;/</span>,<span class="string">'&amp;lt;'</span>).replace(<span class="regexp">/&gt;/</span>,<span class="string">'&amp;gt;'</span>));</div></pre></td></tr></table></figure>
+
+2. 核心部分     
+    <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">modules = modules || [];</div><div class="line">modules.unshift([<span class="string">'$provide'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$provide</span>) </span>&#123;</div><div class="line">  $provide.value(<span class="string">'$rootElement'</span>, element);</div><div class="line">&#125;]);</div><div class="line"></div><div class="line"><span class="keyword">if</span> (config.debugInfoEnabled) &#123;</div><div class="line">  <span class="comment">// Pushing so that this overrides `debugInfoEnabled` setting defined in user's `modules`.</span></div><div class="line">  modules.push([<span class="string">'$compileProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$compileProvider</span>) </span>&#123;</div><div class="line">    $compileProvider.debugInfoEnabled(<span class="literal">true</span>);</div><div class="line">  &#125;]);</div><div class="line">&#125;</div><div class="line"></div><div class="line">modules.unshift(<span class="string">'ng'</span>);</div><div class="line"><span class="keyword">var</span> injector = createInjector(modules, config.strictDi);</div><div class="line">injector.invoke([<span class="string">'$rootScope'</span>, <span class="string">'$rootElement'</span>, <span class="string">'$compile'</span>, <span class="string">'$injector'</span>,</div><div class="line">   <span class="function"><span class="keyword">function</span> <span class="title">bootstrapApply</span>(<span class="params">scope, element, compile, injector</span>) </span>&#123;</div><div class="line">    scope.$apply(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      element.data(<span class="string">'$injector'</span>, injector);</div><div class="line">      compile(element)(scope);</div><div class="line">    &#125;);</div><div class="line">  &#125;]</div><div class="line">);</div></pre></td></tr></table></figure>
+
+    在modules中插入 &apos;$provider&apos;和&apos;ng&apos;    
+    创建注射器 injector并返回injector,此注射器就是根注射器,一个app只有一个injector   
+    拉起内核和启动模块、调用compile服务    
+    到此整个angular就算启动成功了     
+</code></pre><blockquote>
+<p>这篇文章的布局真的是丑。。我已经尽力了,markD中嵌套之后就搞不清楚了,害得慢慢学啊,吾将上下而求索。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/13/ATOM编辑器快捷键大全/" rel="next" title="ATOM编辑器快捷键大全">
+                <i class="fa fa-chevron-left"></i> ATOM编辑器快捷键大全
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/23/毕业前夕/" rel="prev" title="闲记">
+                闲记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Edward cao" />
+          <p class="site-author-name" itemprop="name">Edward cao</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AngularJS的启动中有4个核心的方法"><span class="nav-number">1.</span> <span class="nav-text">AngularJS的启动中有4个核心的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#angularJs有俩种启动方式"><span class="nav-number">1.1.</span> <span class="nav-text">angularJs有俩种启动方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动启动模式"><span class="nav-number">1.1.1.</span> <span class="nav-text">自动启动模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动启动模式"><span class="nav-number">1.1.2.</span> <span class="nav-text">手动启动模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个页面里是可以有多个ng-app的"><span class="nav-number">1.1.3.</span> <span class="nav-text">一个页面里是可以有多个ng-app的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动中的四种方法"><span class="nav-number">1.2.</span> <span class="nav-text">启动中的四种方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bindJQuery"><span class="nav-number">1.2.1.</span> <span class="nav-text">bindJQuery</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#publishExternalAPI-angular"><span class="nav-number">1.2.2.</span> <span class="nav-text">publishExternalAPI (angular)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#angularInit-做一些初始化的操作-防止多次初始化ng-app"><span class="nav-number">1.2.3.</span> <span class="nav-text">angularInit  做一些初始化的操作,防止多次初始化ng-app</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bootstrap-方法"><span class="nav-number">1.2.4.</span> <span class="nav-text">bootstrap 方法</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edward cao</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
