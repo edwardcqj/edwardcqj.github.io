@@ -99,18 +99,18 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/15/rebase操作/index.html">
 <meta property="og:site_name" content="Edward Notes">
 <meta property="og:description" content="rebase命令之前在项目开发的时候，为了方便快捷，合并分支总是用merge命令，虽然用起来简单，不用过多考虑，但是会看历史操作，会发现commit很乱，特别是多人协作开发一个项目的时候。  而且会产生一些多余的commit比如上图中的⭕️标注的地方，为什么会产生呢。这和merge命令的机制有关  mrege合并分支我们看到master分支和    develop分支上各有新的提交C2和C3、C4">
-<meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/commit-merge.jpeg">
-<meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/branch.jpeg">
-<meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/merge-branch.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/git-img/commit-merge.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/git-img/branch.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/git-img/merge-branch.jpeg">
 <meta property="og:image" content="http://yoursite.com/images/git-img/rebase-branch.jpeg">
-<meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/merge-master.jpeg">
-<meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/rebase-develop.jpeg">
-<meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/rebase-commit.jpeg">
-<meta property="og:updated_time" content="2017-07-15T07:40:37.000Z">
+<meta property="og:image" content="http://yoursite.com/images/git-img/merge-master.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/git-img/rebase-develop.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/git-img/rebase-commit.jpeg">
+<meta property="og:updated_time" content="2017-07-15T07:49:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="rebase操作">
 <meta name="twitter:description" content="rebase命令之前在项目开发的时候，为了方便快捷，合并分支总是用merge命令，虽然用起来简单，不用过多考虑，但是会看历史操作，会发现commit很乱，特别是多人协作开发一个项目的时候。  而且会产生一些多余的commit比如上图中的⭕️标注的地方，为什么会产生呢。这和merge命令的机制有关  mrege合并分支我们看到master分支和    develop分支上各有新的提交C2和C3、C4">
-<meta name="twitter:image" content="http://yoursite.com/2017/07/15/rebase操作/commit-merge.jpeg">
+<meta name="twitter:image" content="http://yoursite.com/images/git-img/commit-merge.jpeg">
 
 
 
@@ -328,13 +328,13 @@
 
       
         <h3 id="rebase命令"><a href="#rebase命令" class="headerlink" title="rebase命令"></a>rebase命令</h3><p>之前在项目开发的时候，为了方便快捷，合并分支总是用<code>merge</code>命令，虽然用起来简单，不用过多考虑，但是会看历史操作，会发现<code>commit</code>很乱，特别是多人协作开发一个项目的时候。</p>
-<p><img src="./commit-merge.jpeg" alt="merge-commit"></p>
+<p><img src="/images/git-img/commit-merge.jpeg" alt="merge-commit"></p>
 <p>而且会产生一些多余的<code>commit</code>比如上图中的⭕️标注的地方，为什么会产生呢。这和<code>merge</code>命令的机制有关</p>
-<p><img src="./branch.jpeg" alt="初始"></p>
+<p><img src="/images/git-img/branch.jpeg" alt="初始"></p>
 <h4 id="mrege合并分支"><a href="#mrege合并分支" class="headerlink" title="mrege合并分支"></a>mrege合并分支</h4><p>我们看到<code>master</code>分支和    <code>develop</code>分支上各有新的提交<code>C2和C3、C4</code>,现在我们要把<code>develop</code>分支上的提交合并到<code>master</code>上，如果直接使用<code>merge</code>命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git merge develop</div></pre></td></tr></table></figure>
 <p>git会找到俩个要合并的分支的共同祖先，这里也就是<code>C2</code>,然后会把<code>C2、C3、C5</code>做一个新的提交</p>
-<p><img src="./merge-branch.jpeg" alt="merge后"></p>
+<p><img src="/images/git-img/merge-branch.jpeg" alt="merge后"></p>
 <p>我们发现<code>C5</code>其时是不必要的，而且分支信息会很乱，长期下去，就会导致提交信息很乱。</p>
 <h4 id="rebase-分支"><a href="#rebase-分支" class="headerlink" title="rebase 分支"></a>rebase 分支</h4><p>最近深入学习了<code>rebase</code>命令，来看一下<code>rebase</code>是如何解决的。翻译文章里把<code>rebase</code>翻译为‘变基’，姑且理解为改变根基。什么是根基，就像第一章图里的俩个分支，他们有共同的祖先<code>C2</code>我们就把他们的根基称作<code>C2</code>,当我们执行<code>rebase</code>命令的时候</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase master</div></pre></td></tr></table></figure>
@@ -346,19 +346,19 @@
 <p><img src="/images/git-img/rebase-branch.jpeg" alt="rebase后"></p>
 <p>我们看到历史提交呈一条线形，此时develop的版本领先于master俩个版本，这符合我们日常开发的规律。然后再到master上合并分支。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git merge develop</div></pre></td></tr></table></figure>
-<p><img src="./merge-master.jpeg" alt="前进合并"></p>
+<p><img src="/images/git-img/merge-master.jpeg" alt="前进合并"></p>
 <p>我们看到此时的merge实际上并没有生成新的提交，而是相当于<code>HEAD</code>前移俩个版本</p>
 <p>这样回看历史提交就会清晰很多，但是<code>rebase</code>也不是什么情况下都能用的。</p>
 <p><code>never use it on public branches(不要在公共分支上使用)</code></p>
 <p>不要再多人协作的公共分支上进行<code>rebase</code>，上面的<code>rebase</code>方案，我们是基于<code>develop</code>分支<code>rebase</code>master分支，然后再切到master分支，进行快进合并。当然也有另一种方案：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git checkout master</div><div class="line">git rebase develop</div></pre></td></tr></table></figure>
-<p><img src="./rebase-develop.jpeg" alt="rebase develop"></p>
+<p><img src="/images/git-img/rebase-develop.jpeg" alt="rebase develop"></p>
 <p>我们看到master分支超前develop俩个版本，这个虽然可以实现，但我们通常不这么用，因为master是公公分支，上面会有很多人的提交，其他人还在原来的 master上开发，由于你使用了rebase移动了master，git 会认为你的主分支的历史与其他人的有分歧，会产生冲突。</p>
 <p>而且<code>rebase</code>命令会生成新的哈希值，修改了原来的commit版本号，但内容没有变。如果要撤回：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git reflog    //查看原来的commit信息</div></pre></td></tr></table></figure>
 <h4 id="rebase-版本"><a href="#rebase-版本" class="headerlink" title="rebase 版本"></a>rebase 版本</h4><p><code>rebase</code>命令除了可以进入分支rebase也可以进入某次commit进行rebase。可以<strong>合并提交</strong>，<strong>修改提交信息</strong>，<strong>丢弃不想要的提交</strong>等等</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase -i 9c3242df</div></pre></td></tr></table></figure>
-<p><img src="./rebase-commit.jpeg" alt="rebase 版本"></p>
+<p><img src="/images/git-img/rebase-commit.jpeg" alt="rebase 版本"></p>
 <p>我们看到有一些操作commands：</p>
 <ul>
 <li>pick 挑选当前的commit</li>
