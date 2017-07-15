@@ -102,11 +102,11 @@
 <meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/commit-merge.jpeg">
 <meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/branch.jpeg">
 <meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/merge-branch.jpeg">
-<meta property="og:image" content="http://yoursite.com/2017/07/images/git-img/rebase-branch.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/git-img/rebase-branch.jpeg">
 <meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/merge-master.jpeg">
 <meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/rebase-develop.jpeg">
 <meta property="og:image" content="http://yoursite.com/2017/07/15/rebase操作/rebase-commit.jpeg">
-<meta property="og:updated_time" content="2017-07-15T07:37:47.000Z">
+<meta property="og:updated_time" content="2017-07-15T07:40:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="rebase操作">
 <meta name="twitter:description" content="rebase命令之前在项目开发的时候，为了方便快捷，合并分支总是用merge命令，虽然用起来简单，不用过多考虑，但是会看历史操作，会发现commit很乱，特别是多人协作开发一个项目的时候。  而且会产生一些多余的commit比如上图中的⭕️标注的地方，为什么会产生呢。这和merge命令的机制有关  mrege合并分支我们看到master分支和    develop分支上各有新的提交C2和C3、C4">
@@ -210,7 +210,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -220,7 +220,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -290,7 +290,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-15T10:10:49+08:00">
                 2017-07-15
@@ -343,7 +343,7 @@
 <p>而是</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git add .</div><div class="line">git rebase [--continue|--skip|--absort]</div></pre></td></tr></table></figure>
 <p>来决定是要继续rebase还是终止或者跳过。</p>
-<p><img src="../../images/git-img/rebase-branch.jpeg" alt="rebase后"></p>
+<p><img src="/images/git-img/rebase-branch.jpeg" alt="rebase后"></p>
 <p>我们看到历史提交呈一条线形，此时develop的版本领先于master俩个版本，这符合我们日常开发的规律。然后再到master上合并分支。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git merge develop</div></pre></td></tr></table></figure>
 <p><img src="./merge-master.jpeg" alt="前进合并"></p>
@@ -461,10 +461,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
+            Inhaltsverzeichnis
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
+            Übersicht
           </li>
         </ul>
       
@@ -485,7 +485,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">3</span>
-                <span class="site-state-item-name">posts</span>
+                <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
           
@@ -555,7 +555,7 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
